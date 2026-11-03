@@ -1,0 +1,78 @@
+/* Themes CSS - ChatGPT Aesthetics */
+
+:root, [data-theme="dark"] {
+    --bg-primary: #202123;
+    --bg-secondary: #2b2c2f;
+    --bg-sidebar: #171717;
+    --bg-chat-user: #2f3032;
+    --bg-chat-ai: #202123;
+    --bg-card: #2d2e30;
+    --bg-input: #2f3032;
+    --bg-hover: #343541;
+    --bg-active: #3e3f4b;
+    --bg-modal: #202123;
+    --bg-modal-overlay: rgba(0, 0, 0, 0.65);
+
+    --border-color: #3e3f4b;
+    --border-light: rgba(255, 255, 255, 0.1);
+
+    --text-primary: #ececf1;
+    --text-secondary: #c5c5d2;
+    --text-muted: #8e8ea0;
+    --text-inverse: #10a37f;
+
+    --accent-color: #10a37f;
+    --accent-hover: #1a7f64;
+    --accent-light: rgba(16, 163, 127, 0.15);
+
+    --danger-color: #ef4444;
+    --danger-hover: #dc2626;
+
+    --code-bg: #1e1e1e;
+    --code-header-bg: #2d2d2d;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-full: 9999px;
+}
+
+[data-theme="light"] {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f7f7f8;
+    --bg-sidebar: #f9f9fb;
+    --bg-chat-user: #f4f4f6;
+    --bg-chat-ai: #ffffff;
+    --bg-card: #ffffff;
+    --bg-input: #ffffff;
+    --bg-hover: #ececf1;
+    --bg-active: #e5e5e8;
+    --bg-modal: #ffffff;
+    --bg-modal-overlay: rgba(0, 0, 0, 0.4);
+
+    --border-color: #e5e5e8;
+    --border-light: rgba(0, 0, 0, 0.08);
+
+    --text-primary: #0d0d0d;
+    --text-secondary: #424242;
+    --text-muted: #6e6e80;
+    --text-inverse: #ffffff;
+
+    --accent-color: #10a37f;
+    --accent-hover: #0e8e6e;
+    --accent-light: rgba(16, 163, 127, 0.1);
+
+    --danger-color: #ef4444;
+    --danger-hover: #dc2626;
+
+    --code-bg: #282c34;
+    --code-header-bg: #21252b;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.15);
+}

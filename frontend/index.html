@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>FitUp AI Assistant - Powered by OpenRouter</title>
+
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+
+    <link rel="stylesheet" href="css/themes.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <div id="app-container">
+        <!-- Left Sidebar -->
+        <aside id="sidebar">
+            <div class="sidebar-header">
+                <button class="btn-new-chat" id="btn-new-chat">
+                    <i class="fa-solid fa-plus"></i> New Chat
+                </button>
+            </div>
+
+            <div class="sidebar-search">
+                <input type="text" id="search-history-input" placeholder="Search chats...">
+            </div>
+
+            <div class="sidebar-content" id="sidebar-history-container">
+                <!-- Grouped conversation items loaded dynamically -->
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="footer-btn" id="btn-open-projects">
+                    <i class="fa-solid fa-folder"></i> Projects
+                </button>
+                <button class="footer-btn" id="btn-open-assistants">
+                    <i class="fa-solid fa-robot"></i> Custom Assistants
+                </button>
+                <button class="footer-btn" id="btn-open-settings">
+                    <i class="fa-solid fa-gear"></i> Settings
+                </button>
+                <button class="footer-btn" id="btn-open-about">
+                    <i class="fa-solid fa-user-gear"></i> About Creator
+                </button>
+                <div class="footer-btn" id="user-profile-btn" style="cursor: default;">
+                    <i class="fa-solid fa-user"></i> <span id="user-display-name">Akash Mishra</span>
+                </div>
+                <div style="padding: 8px 10px; font-size: 11px; color: var(--text-muted); text-align: center; border-top: 1px solid var(--border-light); margin-top: 4px;">
+                    Made with ❤️ by <strong style="color: var(--accent-color);">Akash Mishra</strong>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Chat Content -->
+        <main id="main-content">
+            <!-- Top Model Selection Bar -->
+            <header class="top-bar">
+                <button class="mobile-toggle" id="mobile-toggle-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div class="model-selector-container">
+                    <button class="model-selector-btn" id="model-selector-btn">
+                        <span id="selected-model-name">OpenAI GPT-4o Mini</span>
+                        <span class="model-badge" id="selected-model-provider">OpenAI</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div class="model-dropdown" id="model-dropdown">
+                        <div class="dropdown-header">
+                            <input type="text" class="dropdown-search" id="model-search-input" placeholder="Search 200+ models...">
+                            <div class="provider-tags" id="provider-tags-container">
+                                <span class="provider-tag active" data-provider="all">All</span>
+                                <span class="provider-tag" data-provider="OpenAI">OpenAI</span>
+                                <span class="provider-tag" data-provider="Anthropic">Anthropic</span>
+                                <span class="provider-tag" data-provider="Google">Google</span>
+                                <span class="provider-tag" data-provider="DeepSeek">DeepSeek</span>
+                                <span class="provider-tag" data-provider="Meta">Meta</span>
+                            </div>
+                        </div>
+                        <div class="dropdown-body" id="model-list-container">
+                            <!-- Dynamic Models List -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="top-bar-right">
+                    <button class="icon-btn" id="btn-toggle-theme" title="Toggle Theme">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Chat Scroll Container -->
+            <div class="chat-container" id="chat-container">
+                <!-- Welcome View (Default when no chat open) -->
+                <div class="welcome-container" id="welcome-container">
+                    <div class="welcome-logo">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h1 class="welcome-title">What can I help with today?</h1>
+                    <p class="welcome-subtitle">Created &amp; Engineered by <strong style="color: var(--accent-color);">Akash Mishra</strong> • Powered by OpenRouter API</p>
+
+                    <div class="prompt-suggestions">
+                        <div class="suggestion-card" data-prompt="Design a 5-day workout routine focused on strength and hypertrophy.">
+                            <div class="suggestion-title">Fitness &amp; Workout Plan</div>
+                            <div class="suggestion-desc">Create a 5-day strength &amp; muscle mass split</div>
+                        </div>
+                        <div class="suggestion-card" data-prompt="Help me write a Node.js REST API with Express and SQLite database.">
+                            <div class="suggestion-title">Code &amp; Web Development</div>
+                            <div class="suggestion-desc">Write clean Node.js and SQLite backend endpoints</div>
+                        </div>
+                        <div class="suggestion-card" data-prompt="Explain the difference between DeepSeek R1, GPT-4o, and Claude 3.5 Sonnet.">
+                            <div class="suggestion-title">Compare AI Models</div>
+                            <div class="suggestion-desc">Compare top LLMs, reasoning, and context window sizes</div>
+                        </div>
+                        <div class="suggestion-card" data-prompt="Analyze nutritional intake and create a high-protein meal prep plan.">
+                            <div class="suggestion-title">Nutrition &amp; Meal Prep</div>
+                            <div class="suggestion-desc">Build a high-protein diet guide with macros</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Chat Messages -->
+                <div class="chat-messages" id="chat-messages" style="display: none;">
+                    <!-- Dynamically populated message bubbles -->
+                </div>
+            </div>
+
+            <!-- Bottom Floating Message Input -->
+            <div class="input-container">
+                <div class="input-box">
+                    <div class="attachment-preview-bar" id="attachment-preview-bar"></div>
+
+                    <div class="input-row">
+                        <textarea class="chat-textarea" id="chat-textarea" placeholder="Message FitUp AI..." rows="1"></textarea>
+
+                        <div class="input-actions">
+                            <input type="file" id="file-input" style="display: none;" multiple>
+                            <button class="icon-btn" id="btn-attach-file" title="Attach Document / Image">
+                                <i class="fa-solid fa-paperclip"></i>
+                            </button>
+                            <button class="icon-btn" id="btn-voice-input" title="Speech to Text">
+                                <i class="fa-solid fa-microphone"></i>
+                            </button>
+                            <button class="icon-btn btn-send" id="btn-send-message" title="Send Message">
+                                <i class="fa-solid fa-arrow-up"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settings-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2 class="modal-title">Settings</h2>
+                <button class="modal-close" id="close-settings-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-tabs">
+                    <div class="settings-tab active" data-tab="tab-openrouter">OpenRouter API</div>
+                    <div class="settings-tab" data-tab="tab-general">General</div>
+                    <div class="settings-tab" data-tab="tab-ai">AI Preferences</div>
+                    <div class="settings-tab" data-tab="tab-personal">Personalization</div>
+                </div>
+
+                <!-- OpenRouter Tab -->
+                <div class="tab-content" id="tab-openrouter">
+                    <div class="form-group">
+                        <label class="form-label">OpenRouter API Key</label>
+                        <input type="password" class="form-input" id="setting-api-key" placeholder="sk-or-v1-...">
+                        <small style="color: var(--text-muted); margin-top: 4px;">Stored securely encrypted at rest (AES-256-GCM).</small>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn-new-chat" id="btn-save-api-key" style="background-color: var(--accent-color); color: #fff; border: none;">Save API Key</button>
+                        <button class="btn-new-chat" id="btn-test-api-key">Test Key</button>
+                    </div>
+                    <div id="api-key-status-msg" style="margin-top: 10px; font-size: 13px;"></div>
+                </div>
+
+                <!-- General Tab -->
+                <div class="tab-content" id="tab-general" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">Theme</label>
+                        <select class="form-select" id="setting-theme">
+                            <option value="system">System Default</option>
+                            <option value="dark">Dark Theme</option>
+                            <option value="light">Light Theme</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Enter to Send</label>
+                        <select class="form-select" id="setting-enter-send">
+                            <option value="true">Enabled (Enter sends, Shift+Enter new line)</option>
+                            <option value="false">Disabled (Click send button)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- AI Preferences Tab -->
+                <div class="tab-content" id="tab-ai" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">Temperature (Creativity: 0.0 - 1.0)</label>
+                        <input type="number" class="form-input" id="setting-temperature" min="0" max="2" step="0.1" value="0.7">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Max Tokens</label>
+                        <input type="number" class="form-input" id="setting-max-tokens" value="4096">
+                    </div>
+                </div>
+
+                <!-- Personalization Tab -->
+                <div class="tab-content" id="tab-personal" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">Custom Instructions for AI</label>
+                        <textarea class="form-textarea" id="setting-custom-instructions" rows="4" placeholder="What would you like the AI to know about you to provide better responses?"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Creator Modal -->
+    <div class="modal-overlay" id="about-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2 class="modal-title"><i class="fa-solid fa-code-merge" style="color: var(--accent-color);"></i> About Akash Mishra</h2>
+                <button class="modal-close" id="close-about-modal">&times;</button>
+            </div>
+            <div class="modal-body" style="text-align: center; padding: 24px;">
+                <div style="width: 80px; height: 80px; background-color: var(--accent-light); color: var(--accent-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; margin: 0 auto 16px auto;">
+                    <i class="fa-solid fa-user-astronaut"></i>
+                </div>
+
+                <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 4px;">Akash Mishra</h3>
+                <p style="color: var(--accent-color); font-weight: 600; font-size: 14px; margin-bottom: 16px;">Full-Stack Engineer &amp; AI Architect</p>
+
+                <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; text-align: left; margin-bottom: 20px; font-size: 14px; line-height: 1.6; color: var(--text-secondary);">
+                    <p style="margin-bottom: 10px;">
+                        👋 Hello! This AI Assistant application was designed and built from scratch by <strong>Akash Mishra</strong>.
+                    </p>
+                    <p style="margin-bottom: 10px;">
+                        🚀 <strong>Project Vision:</strong> To create a lightning-fast, zero-overhead ChatGPT clone powered by OpenRouter, enabling seamless access to over 200+ state-of-the-art AI models (GPT-4o, Claude 3.5 Sonnet, Gemini 2.0, DeepSeek R1, Llama 3) directly inside the browser.
+                    </p>
+                    <p>
+                        💡 <strong>Highlights:</strong> Real-time SSE streaming, client-side Markdown rendering, voice interaction, document attachment parsing, and encrypted key security.
+                    </p>
+                </div>
+
+                <div style="display: flex; justify-content: center; gap: 12px;">
+                    <a href="https://github.com" target="_blank" class="btn-new-chat" style="text-decoration: none; display: inline-flex; width: auto;">
+                        <i class="fa-brands fa-github"></i> GitHub
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" class="btn-new-chat" style="text-decoration: none; display: inline-flex; width: auto; background-color: var(--accent-color); color: #fff; border: none;">
+                        <i class="fa-brands fa-linkedin"></i> LinkedIn
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- External JS Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+
+    <!-- App JS Modules -->
+    <script src="js/api.js"></script>
+    <script src="js/models.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/projects.js"></script>
+    <script src="js/assistants.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
